@@ -11,9 +11,13 @@ class article:
     def __init__(self, url, title):
         self.url = url
         self.title = title
+
+        # create 1000 dimensional column vector, with entries between 0 and 1
         random_vector = np.random.rand(1000, 1)
+
+        # normalize vector
         vec_sum = np.sum(random_vector)
-        article_vector = random_vector / vec_sum
+        self.article_vector = random_vector / vec_sum
 
 
 hn = HackerNews()
