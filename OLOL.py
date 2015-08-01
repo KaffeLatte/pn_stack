@@ -6,11 +6,13 @@ import unicodedata
 class article:
     url = ""
     title = ""
+    id = 0
     article_vector = None
 
-    def __init__(self, url, title):
+    def __init__(self, url, title, id):
         self.url = url
         self.title = title
+        self.id = id
 
         # create 1000 dimensional column vector, with entries between 0 and 1
         random_vector = np.random.rand(1000, 1)
@@ -19,35 +21,76 @@ class article:
         vec_sum = np.sum(random_vector)
         self.article_vector = random_vector / vec_sum
 
+    def as_dict(self):
 
-hn = HackerNews()
+        retValue = dict()
+        retValue['url'] = self.url
+        retValue['title'] = self.title
+        retValue['id'] = self.id
+        retValue['article_vector'] = self.article_vector.tolist()
 
-top_story_ids = hn.top_stories(limit=30)
+        return retValue
 
-stories = []
-for story_id in top_story_ids:
-    stories.append(hn.get_item(story_id))
+def getHN_stories(article_limit):
+    hn = HackerNews()
 
-for x in stories:
-    print x.title, x.url
+    articles_to_retrieve = int(article_limit*1.5)
+    top_story_ids = hn.top_stories(limit=articles_to_retrieve)
 
-articles = []
-json_list = []
-#for x in stories:
-#    unicode_url = x.url
-#    unicode_title = x.title
+    stories = []
+    for story_id in top_story_ids:
+        stories.append(hn.get_item(story_id))
 
-#    str_url = unicode_url.encode('ascii', 'ignore')
-#    str_title = unicode_title.encode('ascii', 'ignore')
+    return stories
 
-#    new_article = article(str_url, str_title)
-#    articles.append(new_article)
+def HNstories_toArtList(stories, article_limit):
+    articles = []
+    counter = 0
 
-for x in articles:
-    print x.title
+    for x in stories:
+        #print x
+        if counter == article_limit:
+            break
 
-#jj = json_list[0]
-#print type(jj['url'])
-#print jj['title']
-#print jj
+        unicode_url = x.url
+        unicode_title = x.title
 
+        str_url = unicode_url.encode('ascii', 'ignore')
+        str_title = unicode_title.encode('ascii', 'ignore')
+
+        if str_url != "":
+            new_article = article(str_url, str_title, x.item_id)
+            articles.append(new_article)
+            counter += 1
+
+
+    return articles
+
+def convertArticlesToArtDict(articles, cached_articles):
+    new_cached_articles = dict()
+
+    for art in articles:
+        if art.url in cached_articles:
+            new_cached_articles[art.id] = cached_articles[art.id]
+        else:
+            new_cached_articles[art.id] = art
+
+    return new_cached_articles
+
+
+def mainScript():
+    article_limit = 3
+    cached_articles = dict()
+
+    hn_stories = getHN_stories(article_limit)
+    hn_articles = HNstories_toArtList(hn_stories, article_limit)
+    cached_articles = convertArticlesToArtDict(hn_articles, cached_articles)
+
+    l = cached_articles.keys()
+
+    for x in l:
+        with open('top_articles.json', 'w') as outfile:
+            article_object = cached_articles[x]
+            json.dump(article_object.as_dict(), outfile)
+
+mainScript()
