@@ -14,8 +14,8 @@ class article:
         self.title = title
         self.id = id
 
-        # create 1000 dimensional column vector, with entries between 0 and 1
-        random_vector = np.random.rand(1000, 1)
+        # create 1000 dimensional row vector, with entries between 0 and 1
+        random_vector = np.random.rand(1, 1000)
 
         # normalize vector
         vec_sum = np.sum(random_vector)
@@ -27,7 +27,7 @@ class article:
         retValue['url'] = self.url
         retValue['title'] = self.title
         retValue['id'] = self.id
-        retValue['article_vector'] = self.article_vector.tolist()
+        retValue['article_vector'] = np.array(self.article_vector).tolist()
 
         return retValue
 
@@ -79,18 +79,28 @@ def convertArticlesToArtDict(articles, cached_articles):
 
 
 def mainScript():
-    article_limit = 3
+    article_limit = 30
     cached_articles = dict()
 
     hn_stories = getHN_stories(article_limit)
     hn_articles = HNstories_toArtList(hn_stories, article_limit)
     cached_articles = convertArticlesToArtDict(hn_articles, cached_articles)
 
-    l = cached_articles.keys()
+    article_keys = cached_articles.keys()
 
+    article_list = []
+    for x in article_keys:
+        article_object = cached_articles[x]
+        article_list.append(article_object.as_dict())
+
+    with open('top_articles.json', 'w') as outfile:
+        json.dump(article_list, outfile)
+
+'''
     for x in l:
         with open('top_articles.json', 'w') as outfile:
             article_object = cached_articles[x]
             json.dump(article_object.as_dict(), outfile)
+'''
 
 mainScript()
