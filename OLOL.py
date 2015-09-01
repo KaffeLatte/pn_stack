@@ -111,6 +111,7 @@ class pollArticles:
         with open('top_articles.json', 'w') as outfile:
             json.dump(article_list, outfile)
 
+    #TODO handle the case when the article_id does not exist server side
     def receive_user_action(self, user_vector, article_id):
         article_to_mod = self.cached_articles[article_id]
         article_to_mod.mod_article_vector(user_vector)

@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="488ab7cd-1ea3-4915-9141-8b1e9abd74ed" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/OLOL.py" afterPath="$PROJECT_DIR$/OLOL.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/top_articles.json" afterPath="$PROJECT_DIR$/top_articles.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pn_stack.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,8 +26,8 @@
       <file leaf-file-name="OLOL.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/OLOL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8599222">
-              <caret line="130" column="37" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.46303502">
+              <caret line="113" column="72" selection-start-line="113" selection-start-column="72" selection-end-line="113" selection-end-column="72" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -421,8 +419,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/OLOL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8599222">
-          <caret line="130" column="37" selection-start-line="130" selection-start-column="37" selection-end-line="130" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.46303502">
+          <caret line="113" column="72" selection-start-line="113" selection-start-column="72" selection-end-line="113" selection-end-column="72" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
