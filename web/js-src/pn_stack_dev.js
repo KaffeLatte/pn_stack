@@ -50,7 +50,7 @@ var pn_stack = {
 
   /* Initialize everything */
   init: function() {
-    if(typeof(Storage) === "undefined") {
+    if (typeof(Storage) === "undefined") {
       alert("No web storage", "Your browser does not support web storage");
       throw new Error("No web storage");
     }
@@ -147,18 +147,29 @@ var pn_stack = {
     this.registerClickHandler();
   },
 
-  //
+  // Send article and user vector to server
   updateArticles: function(article) {
-    console.log("Update and send", article);
+    this_ = this;
+
+    var data = {
+      article_id: article.id,
+      user_vector: this_.userVector
+    };
+
+    $.post("black-hole", JSON.stringify(data))
+      .fail(function() {
+        console.log("Failed to send data to server");
+        //throw new Error("Could not send application vital info to server...");
+      });
   },
 
   // Return article with article_id
-  getArticle: function(article_id) {
+  getArticle: function(articleId) {
     var articles = this.articles;
     var ret = null;
     
     articles.forEach(function(article) {
-      if (article.id == article_id) {
+      if (article.id == articleId) {
         ret = article;
         return false;
       }
@@ -170,13 +181,13 @@ var pn_stack = {
   },
 
   /* Handle article link clicks */
-  registerClickHandler: function(link_id) {
+  registerClickHandler: function() {
     this_ = this;
     
-    $(".item-link").mousedown(function(event) {
+    $(".item-link").mouseup(function(event) {
       if (event.which == 1 || event.which == 3) {
-        var article_id = parseInt(event.target.id.substring(5));
-        var article = this_.getArticle(article_id);
+        var articleId = parseInt(event.target.id.substring(5));
+        var article = this_.getArticle(articleId);
         this_.updateUserVector(article);
         this_.updateArticles(article);
       }
