@@ -112,11 +112,16 @@ var pn_stack = {
 
     $.getJSON("data/top_articles.json", function(rawArticles) {
       this_.articles = rawArticles.map(function(article) {
-        return {id: article.id,
+        
+      var hoppla = {id: article.article_id,
                 url: this_.escapeHtml(article.url),
                 title: this_.escapeHtml(article.title),
                 article_vector: article.article_vector[0],
-                cosDist: -1}
+                cosDist: -1};
+
+      // console.log(hoppla);
+          
+        return hoppla;
       }); 
 
       this_.renderArticles(true);
@@ -157,7 +162,7 @@ var pn_stack = {
       user_vector: JSON.stringify(this_.userVector)
     };
 
-    $.post("localhost:8080", data)
+    $.post("http://localhost:8080", data)
       .fail(function() {
         console.log("Failed to send data to server");
         throw new Error("Could not send vital application data to server...");
@@ -189,6 +194,9 @@ var pn_stack = {
       if (event.which == 1 || event.which == 3) {
         var articleId = parseInt(event.target.id.substring(5));
         var article = this_.getArticle(articleId);
+
+//        console.log(articleId, article);
+
         this_.updateUserVector(article, false);
         this_.updateArticles(article);
       }
