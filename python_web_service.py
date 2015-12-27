@@ -48,7 +48,7 @@ class article:
 
 class pollArticles:
     cached_articles = dict()
-    article_limit = 2
+    article_limit = 30
 
     def getHN_stories(self, article_limit):
         hn = HackerNews()
@@ -112,8 +112,10 @@ class pollArticles:
             article_object = self.cached_articles[x]
             article_list.append(article_object.as_dict())
 
-        with open('top_articles.json', 'w') as outfile:
+        with open('./web/data/top_articles.json', 'w') as outfile:
             json.dump(article_list, outfile)
+
+        print ("LOL")
 
     #TODO handle the case when the article_id does not exist server side
     def receive_user_action(self, user_vector, article_id):
@@ -131,13 +133,14 @@ class PythonBackEnd(object):
 
     exposed = True
 
-    def POST(self, user_vector, article_id):
+    def POST(self, user_vector, article_id):        
         if (int(article_id)):
             userVector = json.loads(user_vector)
-            userVector = int(userVector)
+            userVector = np.array(userVector)
 
             print (article_id)
-            #self.backEnd.receive_user_action(userVector, article_id)
+            self.backEnd.receive_user_action(userVector, int(article_id))
+
         return
 
 if __name__ == '__main__':
