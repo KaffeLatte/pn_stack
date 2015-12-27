@@ -85,7 +85,7 @@ var pn_stack = {
   },
 
   // Update user vector with latest article
-  updateUserVector: function(article) {
+  updateUserVector: function(article, newClickHandler) {
     var userVector = this.userVector;
     var articleVector = article.article_vector;
 
@@ -96,7 +96,7 @@ var pn_stack = {
     this.userVector = newVector;
     localStorage.userVector = JSON.stringify(newVector);
 
-    this.renderArticles();
+    this.renderArticles(newClickHandler);
   },
 
   // Reset/create new random user vector
@@ -119,12 +119,12 @@ var pn_stack = {
                 cosDist: -1}
       }); 
 
-      this_.renderArticles();
+      this_.renderArticles(true);
     });
   },
 
   // Calculate and order list. Render list with React.
-  renderArticles: function() {
+  renderArticles: function(newClickHandler) {
     this_ = this;
     var articles = this.articles;
     var userVector = this.userVector;
@@ -144,7 +144,8 @@ var pn_stack = {
       document.getElementById("items")
     );
 
-    this.registerClickHandler();
+    if (newClickHandler)
+      this.registerClickHandler();
   },
 
   // Send article and user vector to server
@@ -153,13 +154,13 @@ var pn_stack = {
 
     var data = {
       article_id: article.id,
-      user_vector: this_.userVector
+      user_vector: JSON.stringify(this_.userVector)
     };
 
-    $.post("black-hole", JSON.stringify(data))
+    $.post("localhost:8080", data)
       .fail(function() {
         console.log("Failed to send data to server");
-        //throw new Error("Could not send application vital info to server...");
+        throw new Error("Could not send vital application data to server...");
       });
   },
 
@@ -188,7 +189,7 @@ var pn_stack = {
       if (event.which == 1 || event.which == 3) {
         var articleId = parseInt(event.target.id.substring(5));
         var article = this_.getArticle(articleId);
-        this_.updateUserVector(article);
+        this_.updateUserVector(article, false);
         this_.updateArticles(article);
       }
     });
