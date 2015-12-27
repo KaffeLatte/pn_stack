@@ -113,11 +113,12 @@ class pollArticles:
 
     #TODO handle the case when the article_id does not exist server side
     def receive_user_action(self, user_vector, article_id):
-        article_to_mod = self.cached_articles[article_id]
-        article_to_mod.mod_article_vector(user_vector)
+        if article_id in self.cached_articles:
+            article_to_mod = self.cached_articles[article_id]
+            article_to_mod.mod_article_vector(user_vector)
 
-        self.cached_articles[article_id] = article_to_mod
-        self.save_articles_to_json()
+            self.cached_articles[article_id] = article_to_mod
+            self.save_articles_to_json()
 
 
 
