@@ -139,8 +139,8 @@ class PythonBackEnd(object):
     backEnd = pollArticles()
     backEnd.poll_articles()
 
-    userActions = Queue()
-    t = threading.Thread(target=threadedFunctionality())
+    userActions = Queue.Queue()
+    t = threading.Thread(target=threadedFunctionality(), args=(backEnd, userActions))
     t.start()
 
     exposed = True
