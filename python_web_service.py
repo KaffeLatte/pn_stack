@@ -128,7 +128,7 @@ class pollArticles:
             self.cached_articles[article_id] = article_to_mod
             self.save_articles_to_json()
 
-def threadedFunctionality():
+def threadedFunctionality(backEnd, userActions):
     while(True):
         if not userActions.empty():
             local_set = userActions.get()
