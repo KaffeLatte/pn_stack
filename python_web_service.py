@@ -119,7 +119,7 @@ class pollArticles:
         #with open('./web/data/top_articles.json', 'w') as outfile:
         #    json.dump(article_list, outfile)
 
-        self.articles_as_json = json.loads(article_list)
+        self.articles_as_json = json.dumps(article_list)
         print ("LOL")
 
     #TODO handle the case when the article_id does not exist server side

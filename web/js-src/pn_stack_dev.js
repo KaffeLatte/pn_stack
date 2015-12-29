@@ -110,7 +110,7 @@ var pn_stack = {
   getArticles: function() {
     this_ = this;
 
-    $.getJSON("data/top_articles.json", function(rawArticles) {
+    $.getJSON("http://localhost:8080", function(rawArticles) {
       this_.articles = rawArticles.map(function(article) {
         
       var hoppla = {id: article.article_id,
