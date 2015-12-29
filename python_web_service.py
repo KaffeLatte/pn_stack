@@ -6,6 +6,8 @@ import unicodedata
 import random
 import string
 import cherrypy
+import Queue
+import threading
 
 class article:
     url = ""
@@ -126,10 +128,20 @@ class pollArticles:
             self.cached_articles[article_id] = article_to_mod
             self.save_articles_to_json()
 
+def threadedFunctionality():
+    while(True):
+        if (!userActions.empty()):
+            local_set = userActions.get()
+            backEnd.receive_user_action(local_set[0], local_set[1])
+
 
 class PythonBackEnd(object):
     backEnd = pollArticles()
     backEnd.poll_articles()
+
+    userActions = Queue()
+    t = threading.Thread(target=threadedFunctionality())
+    t.start()
 
     exposed = True
 
@@ -139,7 +151,8 @@ class PythonBackEnd(object):
             userVector = np.array(userVector)
 
             print (article_id)
-            self.backEnd.receive_user_action(userVector, int(article_id))
+            self.userActions.put([userVector, int(article_id)])
+            #self.backEnd.receive_user_action(userVector, int(article_id))
 
         return
 
