@@ -130,7 +130,7 @@ class pollArticles:
 
 def threadedFunctionality():
     while(True):
-        if (!userActions.empty()):
+        if not userActions.empty():
             local_set = userActions.get()
             backEnd.receive_user_action(local_set[0], local_set[1])
 
